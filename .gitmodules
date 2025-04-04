@@ -1,0 +1,7 @@
+[submodule "transformers"]
+	path = transformers
+	url = https://github.com/jp1924/transformers.git
+	branch = add_MiniCPM-o
+[submodule "MiniCPM-o"]
+	path = MiniCPM-o
+	url = https://github.com/OpenBMB/MiniCPM-o.git
