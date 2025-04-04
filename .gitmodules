@@ -5,3 +5,6 @@
 [submodule "MiniCPM-o"]
 	path = MiniCPM-o
 	url = https://github.com/OpenBMB/MiniCPM-o.git
+[submodule "model"]
+	path = model
+	url = https://huggingface.co/openbmb/MiniCPM-o-2_6
