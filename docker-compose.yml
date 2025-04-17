@@ -1,0 +1,21 @@
+services:
+  train-contrainer:
+    container_name: LLM
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/root/workspace
+    tty: true
+    shm_size: 126G
+    environment:
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+      - TZ=Asia/Seoul
+      - PATH=/usr/local/cuda/bin:$PATH
+      - LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+      - WANDB_API_KEY=${WANDB_API_KEY}
+      - HF_TOKEN=${HF_TOKEN}
+      - NVIDIA_VISIBLE_DEVICES=0,1,2,3
+    cap_drop:
+      - SYS_ADMIN
