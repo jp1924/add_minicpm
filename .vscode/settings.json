@@ -1,0 +1,46 @@
+{
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    // Enable formatting the entire Notebook on save
+    "notebook.formatOnSave.enabled": true,
+    "notebook.codeActionsOnSave": {
+        "notebook.source.fixAll": "explicit",
+        "notebook.source.organizeImports": "explicit"
+    },
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.formatOnType": true,
+    },
+    "[markdown]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.markdownlint": "explicit"
+    },
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.enabled": false,
+    "ruff.configuration": "/home/jp/ruff.toml",
+    "files.refactoring.autoSave": true,
+    "ruff.lint.preview": true,
+    "ruff.organizeImports": true,
+    "ruff.format.preview": false,
+    "ruff.lint.enable": true,
+    "ruff.enable": true,
+    "markdownlint.run": "onSave",
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "*test.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
+}

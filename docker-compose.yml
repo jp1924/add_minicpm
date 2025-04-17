@@ -1,11 +1,12 @@
 services:
-  train-contrainer:
-    container_name: LLM
+  add_minicpm_o:
+    container_name: PR
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - ./:/root/workspace
+      - ./.vscode/:/root/.vscode
     tty: true
     shm_size: 126G
     environment:
