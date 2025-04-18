@@ -2,7 +2,6 @@ import requests
 import torch
 from model.image_processing_minicpmv import MiniCPMVImageProcessor
 from PIL import Image
-
 from transformers.models.minicpm_o import MiniCPMOImageProcessor
 
 
@@ -23,15 +22,21 @@ def get_org_pixel_values(images):
 
     all_pixel_values = []
     for pixel_values in org_outputs["pixel_values"]:
-        all_pixel_values.extend([i.flatten(end_dim=1).permute(1, 0) for i in pixel_values])
+        all_pixel_values.extend(
+            [i.flatten(end_dim=1).permute(1, 0) for i in pixel_values]
+        )
 
     tgt_sizes = org_outputs["tgt_sizes"]
-    tgt_sizes = [tgt_size for tgt_size in tgt_sizes if isinstance(tgt_size, torch.Tensor)]
+    tgt_sizes = [
+        tgt_size for tgt_size in tgt_sizes if isinstance(tgt_size, torch.Tensor)
+    ]
     tgt_sizes = torch.vstack(tgt_sizes).type(torch.int32)
 
     max_patches = torch.max(tgt_sizes[:, 0] * tgt_sizes[:, 1])
 
-    all_pixel_values = torch.nn.utils.rnn.pad_sequence(all_pixel_values, batch_first=True, padding_value=0.0)
+    all_pixel_values = torch.nn.utils.rnn.pad_sequence(
+        all_pixel_values, batch_first=True, padding_value=0.0
+    )
     B, L, _ = all_pixel_values.shape
     all_pixel_values = all_pixel_values.permute(0, 2, 1).reshape(B, 3, -1, L)
 
@@ -49,16 +54,34 @@ def get_org_pixel_values(images):
 image_1 = Image.new("RGB", (1200, 676), (255, 255, 255))
 image_2 = Image.new("RGB", (8914, 803), (255, 255, 255))
 
-image_3 = Image.open(requests.get("https://picsum.photos/id/237/400/300", stream=True).raw)
-image_4 = Image.open(requests.get("https://picsum.photos/id/231/200/300", stream=True).raw)
+image_3 = Image.open(
+    requests.get("https://picsum.photos/id/237/400/300", stream=True).raw
+)
+image_4 = Image.open(
+    requests.get("https://picsum.photos/id/231/200/300", stream=True).raw
+)
 
 images = [image_1, image_2, image_3, image_4]
 new_outputs = get_new_pixel_values(images)
 org_outputs = get_org_pixel_values(images)
 
 new_outputs["pixel_values"] == org_outputs["pixel_values"]
+new_outputs["target_sizes"] == org_outputs["target_sizes"]
+new_outputs["pixel_attention_mask"] == org_outputs["pixel_attention_mask"]
 
 if not (new_outputs["pixel_values"] == org_outputs["pixel_values"]).all():
     print("Pixel values are not the same!")
 else:
     print("Pixel values are the same!")
+
+if not (new_outputs["target_sizes"] == org_outputs["target_sizes"]).all():
+    print("Target sizes are not the same!")
+else:
+    print("Target sizes are the same!")
+
+if not (
+    new_outputs["pixel_attention_mask"] == org_outputs["pixel_attention_mask"]
+).all():
+    print("Pixel attention masks are not the same!")
+else:
+    print("Pixel attention masks are the same!")
